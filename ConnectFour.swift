@@ -44,11 +44,9 @@ func checkForWin(_ marker: String) -> Bool {
     let winString: String = String(repeating: marker, count: numToWin)
     // Check for vertical wins.
     // Go through each column
-    for colNum in 0..<numColumns {
-        // Check if the column contains a win
-        if gameGrid[colNum].contains(winString) {
-            return true
-        }
+    for colNum in 0..<numColumns where gameGrid[colNum].contains(winString) {
+        // Return true if the column contains a win.
+        return true
     }
     // Check for horizontal wins.
     // Go through each row.
@@ -74,7 +72,7 @@ func checkForWin(_ marker: String) -> Bool {
             var diagonal: String = ""
             // Create the diagonal string.
             for squareNum in 0..<numToWin {
-                diagonal += getNthChar(gameGrid[colNum+squareNum], rowNum + squareNum) 
+                diagonal += getNthChar(gameGrid[colNum+squareNum], rowNum + squareNum)
             }
             // Check if the diagonal is a win.
             if diagonal == winString {
@@ -90,7 +88,7 @@ func checkForWin(_ marker: String) -> Bool {
             var diagonal: String = ""
             // Create the diagonal string.
             for squareNum in 0..<numToWin {
-                diagonal += getNthChar(gameGrid[colNum+squareNum], rowNum - squareNum) 
+                diagonal += getNthChar(gameGrid[colNum+squareNum], rowNum - squareNum)
             }
             // Check if the diagonal is a win.
             if diagonal == winString {
@@ -147,11 +145,9 @@ func getUnfilledColumns() -> [Int] {
     // Create a list to hold unfilled column numbers.
     var unfilledColumns = [Int]()
     // Go through every column
-    for colNum in 0..<numColumns {
+    for colNum in 0..<numColumns where getNthChar(gameGrid[colNum], numRows - 1) == " " {
         // If the column is not full, add it to the list.
-        if getNthChar(gameGrid[colNum], numRows - 1) == " " {
-            unfilledColumns.append(colNum)
-        }
+        unfilledColumns.append(colNum)
     }
     // Return the list of unfilled column numbers.
     return unfilledColumns
@@ -175,7 +171,7 @@ for _ in 0..<numColumns {
 }
 
 // LOOP
-while turnNumber <= totalGridSpaces {
+while turnNumber <= totalGridSpaces + 1 {
     // Display the game grid.
     displayGameGrid()
     // USER TURN
@@ -199,14 +195,12 @@ while turnNumber <= totalGridSpaces {
             } else {
                 // If it is, place the user's marker in the chosen column.
                 // Find the lowest empty space in the column.
-                for rowNum in 0...numRows {
-                    if getNthChar(gameGrid[chosenColumn], rowNum) == " " {
-                        // Place the user's marker in the empty space.
-                        var column = gameGrid[chosenColumn]
-                        column = column.prefix(rowNum) + userMarker + column.suffix(numRows - rowNum - 1)
-                        gameGrid[chosenColumn] = column
-                        break
-                    }
+                for rowNum in 0...numRows where getNthChar(gameGrid[chosenColumn], rowNum) == " " {
+                    // Place the user's marker in the empty space.
+                    var column = gameGrid[chosenColumn]
+                    column = column.prefix(rowNum) + userMarker + column.suffix(numRows - rowNum - 1)
+                    gameGrid[chosenColumn] = column
+                    break
                 }
                 // Increment the turn number.
                 turnNumber += 1
@@ -224,14 +218,12 @@ while turnNumber <= totalGridSpaces {
         let chosenColumn = unfilledColumns.randomElement() ?? 0
         // Place the ai's marker in the chosen column.
         // Find the lowest empty space in the column.
-        for rowNum in 0...numRows {
-            if getNthChar(gameGrid[chosenColumn], rowNum) == " " {
-                // Place the ai's marker in the empty space.
-                var column = gameGrid[chosenColumn]
-                column = column.prefix(rowNum) + aiMarker + column.suffix(numRows - rowNum - 1)
-                gameGrid[chosenColumn] = column
-                break
-            }
+        for rowNum in 0...numRows where getNthChar(gameGrid[chosenColumn], rowNum) == " " {
+            // Place the ai's marker in the empty space.
+            var column = gameGrid[chosenColumn]
+            column = column.prefix(rowNum) + aiMarker + column.suffix(numRows - rowNum - 1)
+            gameGrid[chosenColumn] = column
+            break
         }
         // Print the ai's chosen column.
         print("\(aiColor)AI chose column \(chosenColumn + 1)\(resetColor)")
