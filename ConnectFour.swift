@@ -33,35 +33,12 @@ func getNthChar(_ targetString: String, _ targetIndex: Int) -> String {
     return char
 }
 
-/* Function that checks if a marker has won
-* Looks for any matches of markers {numToWin} in a row.
-* Orthogonally or diagonally.
-* [param] marker the marker to check for a win.
-* [return] true if the marker has won, false otherwise.
-*/
-func checkForWin(_ marker: String) -> Bool {
+// Extra function to reduce cyclomatic complexity.
+// Purely for the linter
+// Function that checks for diagonal wins.
+func checkForDiagonalWins(_ marker: String) -> Bool {
     // Arrangement that results in a win
     let winString: String = String(repeating: marker, count: numToWin)
-    // Check for vertical wins.
-    // Go through each column
-    for colNum in 0..<numColumns where gameGrid[colNum].contains(winString) {
-        // Return true if the column contains a win.
-        return true
-    }
-    // Check for horizontal wins.
-    // Go through each row.
-    for rowNum in 0..<numRows {
-        // Set variable to hold the row string.
-        var row: String = ""
-        // Create the row string by iterating through each column
-        for colNum in 0..<numColumns {
-            row += getNthChar(gameGrid[colNum], rowNum)
-        }
-        // Check if the row contains a win.
-        if row.contains(winString) {
-            return true
-        }
-    }
     // Check for forward slash [/] diagonal wins.
     // Go through every square that can be considered a starting point.
     // No starting point can be in the last {numToWin - 1} columns or rows.
@@ -100,6 +77,42 @@ func checkForWin(_ marker: String) -> Bool {
     return false
 }
 
+/* Function that checks if a marker has won
+* Looks for any matches of markers {numToWin} in a row.
+* Orthogonally or diagonally.
+* [param] marker the marker to check for a win.
+* [return] true if the marker has won, false otherwise.
+*/
+func checkForWin(_ marker: String) -> Bool {
+    // Arrangement that results in a win
+    let winString: String = String(repeating: marker, count: numToWin)
+    // Check for vertical wins.
+    // Go through each column
+    for colNum in 0..<numColumns where gameGrid[colNum].contains(winString) {
+        // Return true if the column contains a win.
+        return true
+    }
+    // Check for horizontal wins.
+    // Go through each row.
+    for rowNum in 0..<numRows {
+        // Set variable to hold the row string.
+        var row: String = ""
+        // Create the row string by iterating through each column
+        for colNum in 0..<numColumns {
+            row += getNthChar(gameGrid[colNum], rowNum)
+        }
+        // Check if the row contains a win.
+        if row.contains(winString) {
+            return true
+        }
+    }
+    // Check for diagonal wins.
+    if checkForDiagonalWins(marker) {
+        return true
+    }
+    // If no wins were found, return false.
+    return false
+}
 
 // Color for the player's marker [Blue].
 let userColor: String = "\u{001B}[34m"
