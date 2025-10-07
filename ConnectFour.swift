@@ -41,7 +41,7 @@ func getNthChar(_ targetString: String, _ targetIndex: Int) -> String {
 */
 func checkForWin(_ marker: String) -> Bool {
     // Arrangement that results in a win
-    let winString: String = String(repeating: marker, count:numToWin)
+    let winString: String = String(repeating: marker, count: numToWin)
     // Check for vertical wins.
     // Go through each column
     for colNum in 0..<numColumns {
@@ -115,10 +115,10 @@ let resetColor: String = "\u{001B}[0m"
 // Function that displays the game grid.
 func displayGameGrid() -> Void {
     // Reset color
-    print(resetColor, terminator:"")
+    print(resetColor, terminator: "")
     // Print the column numbers
     for colNum in 0..<numColumns {
-        print(" \(colNum + 1)", terminator:"")
+        print(" \(colNum + 1)", terminator: "")
     }
     // Newline after printing column numbers.
     print()
@@ -129,9 +129,9 @@ func displayGameGrid() -> Void {
             // Match the marker with the correct color.
             // If it's not a user or ai marker, it just prints a hashtag.
             if marker == userMarker {
-                print(" \(userColor)\(marker)\(resetColor)", terminator:"")
+                print(" \(userColor)\(marker)\(resetColor)", terminator: "")
             } else if marker == aiMarker {
-                print(" \(aiColor)\(marker)\(resetColor)", terminator:"")
+                print(" \(aiColor)\(marker)\(resetColor)", terminator: "")
             } else {
                 print(" #", terminator:"")
             }
@@ -171,7 +171,7 @@ let totalGridSpaces = numColumns * numRows
 
 // Fill up the game grid with empty spaces.
 for _ in 0..<numColumns {
-    gameGrid.append(String(repeating:" ", count:numRows))
+    gameGrid.append(String(repeating: " ", count: numRows))
 }
 
 // LOOP
@@ -181,7 +181,7 @@ while turnNumber <= totalGridSpaces {
     // USER TURN
     if turnNumber % 2 != 0 {
         // Prompt for user input for the column number.
-        print("Enter a column number [1-\(numColumns)]: ", terminator:"")
+        print("Enter a column number [1-\(numColumns)]: ", terminator: "")
         // Get user input for the column number as a string.
         let chosenColumnAsString = readLine() ?? ""
         // Convert string input to an integer.
