@@ -184,7 +184,7 @@ for _ in 0..<numColumns {
 }
 
 // LOOP
-while turnNumber <= totalGridSpaces + 1 {
+while turnNumber <= totalGridSpaces {
     // Display the game grid.
     displayGameGrid()
     // USER TURN
