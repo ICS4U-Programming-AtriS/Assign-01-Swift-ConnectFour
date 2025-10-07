@@ -124,7 +124,6 @@ func displayGameGrid() -> Void {
     print()
     // Go through every row [starting from the top].
     for rowNum in (0..<numRows).reversed() {
-        print(rowNum)
         for colNum in 0..<numColumns {
             let marker = getNthChar(gameGrid[colNum], rowNum)
             // Match the marker with the correct color.
@@ -150,7 +149,7 @@ func getUnfilledColumns() -> [Int] {
     // Go through every column
     for colNum in 0..<numColumns {
         // If the column is not full, add it to the list.
-        if getNthChar(gameGrid[colNum], numRows - 1) != " " {
+        if getNthChar(gameGrid[colNum], numRows - 1) == " " {
             unfilledColumns.append(colNum)
         }
     }
@@ -179,39 +178,74 @@ for _ in 0..<numColumns {
 while turnNumber <= totalGridSpaces {
     // Display the game grid.
     displayGameGrid();
-    print("PASSED 1")
     // USER TURN
     if turnNumber % 2 != 0 {
-        if let chosenColumnAsString = readLine() {
+        // Prompt for user input for the column number.
+        print("Enter a column number [1-\(numColumns)]: ", terminator:"")
+        // Get user input for the column number as a string.
+        let chosenColumnAsString = readLine() ?? ""
+        // Convert string input to an integer.
+        if var chosenColumn = Int(chosenColumnAsString) {
+            // 1 is subtracted to make it match with the actual array indexes.
+            chosenColumn -= 1
+            // Check if the input is valid.
+            if chosenColumn < 0 || chosenColumn >= numColumns {
+                // If it isn't, give an error message [IN RED]
+                print("\u{001B}[0;31mERROR: INPUT OUT OF BOUNDS.")
+                continue
+            } else if getNthChar(gameGrid[chosenColumn], numRows-1) != " " {
+                // If the column is full, give an error message [IN RED]
+                print("\u{001B}[0;31mERROR: COLUMN IS FULL.")
+            } else {
+                // If it is, place the user's marker in the chosen column.
+                // Find the lowest empty space in the column.
+                for rowNum in 0...numRows {
+                    if getNthChar(gameGrid[chosenColumn], rowNum) == " " {
+                        // Place the user's marker in the empty space.
+                        var column = gameGrid[chosenColumn]
+                        column = column.prefix(rowNum) + userMarker + column.suffix(numRows - rowNum - 1)
+                        gameGrid[chosenColumn] = column
+                        break
+                    }
+                }
+                // Increment the turn number.
+                turnNumber += 1
+            }
+        } else {
+            // If the input isn't an integer, give an error message [IN RED]
+            print("\u{001B}[0;31mERROR: INPUT MUST BE AN INTEGER.")
             continue
         }
     } else {
-        // // AI TURN
-        // // Get a list of unfilled columns.
-        // let unfilledColumns = getUnfilledColumns()
-        // // Pick a random column from the list of unfilled columns.
-        // let chosenColumn = unfilledColumns.randomElement() ?? 0
-        // // Place the AI's marker in the chosen column.
-        // // Find the lowest empty space in the column.
-        // for rowNum in 0...numRows {
-        //     if getNthChar(gameGrid[chosenColumn], rowNum) == " " {
-        //         // Place the AI's marker in the empty space.
-        //         var column = gameGrid[chosenColumn]
-        //         gameGrid[chosenColumn] = column
-        //         break
-        //     }
-        // }
-        // // Increment the turn number.
-        // turnNumber += 1
+        // AI TURN
+        // Get a list of unfilled columns.
+        let unfilledColumns = getUnfilledColumns()
+        // Pick a random column from the list of unfilled columns.
+        let chosenColumn = unfilledColumns.randomElement() ?? 0
+        // Place the ai's marker in the chosen column.
+        // Find the lowest empty space in the column.
+        for rowNum in 0...numRows {
+            if getNthChar(gameGrid[chosenColumn], rowNum) == " " {
+                // Place the ai's marker in the empty space.
+                var column = gameGrid[chosenColumn]
+                column = column.prefix(rowNum) + aiMarker + column.suffix(numRows - rowNum - 1)
+                gameGrid[chosenColumn] = column
+                break
+            }
+        }
+        // Print the ai's chosen column.
+        print("\(aiColor)AI chose column \(chosenColumn + 1)\(resetColor)")
+        // Increment the turn number.
+        turnNumber += 1
     }
-    // // Check if the user has won.
-    // if checkForWin(userMarker) {
-    //     break
-    // }
-    // // Check if the AI has won.
-    // if checkForWin(aiMarker) {
-    //     break
-    // }
+    // Check if the user has won.
+    if checkForWin(userMarker) {
+        break
+    }
+    // Check if the AI has won.
+    if checkForWin(aiMarker) {
+        break
+    }
 }
 
 // Display the game grid one last time.
