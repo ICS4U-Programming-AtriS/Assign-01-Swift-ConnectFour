@@ -117,8 +117,8 @@ func checkForWin(_ marker: String) -> Bool {
 // Color for the player's marker [Blue].
 let userColor: String = "\u{001B}[34m"
 
-// Color for the AI's marker [Green].
-let aiColor: String = "\u{001B}[32m"
+// Color for the AI's marker [Purple].
+let aiColor: String = "\u{001B}[35m"
 
 // Color for resetting the color.
 let resetColor: String = "\u{001B}[0m"
