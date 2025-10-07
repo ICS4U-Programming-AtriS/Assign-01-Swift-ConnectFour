@@ -54,7 +54,7 @@ func checkForWin(_ marker: String) -> Bool {
     // Go through each row.
     for rowNum in 0..<numRows {
         // Set variable to hold the row string.
-        var row: String = "";
+        var row: String = ""
         // Create the row string by iterating through each column
         for colNum in 0..<numColumns {
             row += getNthChar(gameGrid[colNum], rowNum)
@@ -71,7 +71,7 @@ func checkForWin(_ marker: String) -> Bool {
     for colNum in 0...(numColumns - numToWin) {
         for rowNum in 0...(numRows - numToWin) {
             // Set variable to hold the diagonal string.
-            var diagonal: String = "";
+            var diagonal: String = ""
             // Create the diagonal string.
             for squareNum in 0..<numToWin {
                 diagonal += getNthChar(gameGrid[colNum+squareNum], rowNum + squareNum) 
@@ -87,7 +87,7 @@ func checkForWin(_ marker: String) -> Bool {
     for colNum in 0...(numColumns - numToWin) {
         for rowNum in (numRows - (numToWin - 1))..<numRows {
             // Set variable to hold the diagonal string.
-            var diagonal: String = "";
+            var diagonal: String = ""
             // Create the diagonal string.
             for squareNum in 0..<numToWin {
                 diagonal += getNthChar(gameGrid[colNum+squareNum], rowNum - squareNum) 
@@ -113,7 +113,7 @@ let aiColor: String = "\u{001B}[32m"
 let resetColor: String = "\u{001B}[0m"
 
 // Function that displays the game grid.
-func displayGameGrid() -> Void {
+func displayGameGrid() {
     // Reset color
     print(resetColor, terminator: "")
     // Print the column numbers
@@ -133,7 +133,7 @@ func displayGameGrid() -> Void {
             } else if marker == aiMarker {
                 print(" \(aiColor)\(marker)\(resetColor)", terminator: "")
             } else {
-                print(" #", terminator:"")
+                print(" #", terminator: "")
             }
         }
         // Print a new line after every the end of every row,
@@ -177,7 +177,7 @@ for _ in 0..<numColumns {
 // LOOP
 while turnNumber <= totalGridSpaces {
     // Display the game grid.
-    displayGameGrid();
+    displayGameGrid()
     // USER TURN
     if turnNumber % 2 != 0 {
         // Prompt for user input for the column number.
@@ -261,4 +261,4 @@ if checkForWin(userMarker) {
 } else {
     // TIE MESSAGE
     print("IT'S A TIE! NO ONE WINS!")
-}   
+}
